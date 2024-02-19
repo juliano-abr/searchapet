@@ -1,3 +1,15 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react",
+    "strict": true,
+    "baseUrl": ".",
+    "esModuleInterop": true
+  },
+  "paths": {
+    "@components/*": ["src/components/*"],
+    "@pages/*": ["src/pages/*"],
+    "assets": ["assets/*"]
+  },
+  "exclude": ["node_modules"]
 }
