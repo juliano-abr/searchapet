@@ -1,19 +1,17 @@
 import React from 'react';
 import { useContext, useState } from 'react';
-import { View, FlatList, TextInput, StyleSheet } from 'react-native';
+import { FlatList, TextInput, StyleSheet, View, Platform, StatusBar } from 'react-native';
 import { useSelector } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
 import { AnimalData } from 'src/utils/types';
 import { AnimalContext } from 'src/providers/AnimalProvider';
 import AnimalCard from 'src/components/AnimalCard';
 import { StoreType } from 'src/store';
 import { strings } from 'src/utils/strings';
 
-const AnimalSearchScreen: React.FC = () => {
+const AnimalSearchScreen: React.FC = ({ navigation }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const savedAnimals = useSelector((state: StoreType) => state.animal.savedAnimals);
   const { setAnimal } = useContext(AnimalContext);
-  const navigation = useNavigation();
 
   const filteredAnimals = searchTerm
     ? savedAnimals.filter((animal: AnimalData) =>
@@ -33,7 +31,9 @@ const AnimalSearchScreen: React.FC = () => {
   return (
     <View style={styles.container}>
       <TextInput
+        style={styles.text}
         placeholder={strings.searchPlaceholder}
+        placeholderTextColor={'#000'}
         value={searchTerm}
         onChangeText={setSearchTerm}
       />
@@ -51,6 +51,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F3E5AB', // Light beige
     padding: 10,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 48,
+  },
+  text: {
+    flex: 0,
+    fontSize: 16,
+    color: '#2C3E50', // Dark blue
+    marginBottom: 16,
   },
 });
 

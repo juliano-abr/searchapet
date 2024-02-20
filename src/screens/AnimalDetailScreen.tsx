@@ -1,21 +1,26 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AnimalContext } from 'src/providers/AnimalProvider';
 import { strings } from 'src/utils/strings';
 
-const AnimalDetailScreen: React.FC = () => {
+const AnimalDetailScreen: React.FC = ({ navigation }) => {
   const { animal } = useContext(AnimalContext);
 
+  // Set the title dynamically
+  useEffect(() => {
+    navigation.setOptions({ title: animal?.name });
+  }, [animal, navigation]);
+
   return (
-    <View style={styles.container}>
+    <SafeAreaProvider style={styles.container}>
       {animal && (
         <View>
-          <Text style={styles.text}>{strings.nameLabel + ': ' + animal.name}</Text>
           <Text style={styles.text}>{strings.ageLabel + ': ' + animal.age}</Text>
           <Text style={styles.text}>{strings.breedLabel + ': ' + animal.breed}</Text>
         </View>
       )}
-    </View>
+    </SafeAreaProvider>
   );
 };
 
@@ -24,12 +29,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F3E5AB', // Light beige
     padding: 10,
-  },
-  card: {
-    backgroundColor: '#E5989B', // Light coral
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 10,
   },
   text: {
     color: '#2C3E50', // Dark blue
